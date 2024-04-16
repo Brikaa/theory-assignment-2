@@ -56,13 +56,13 @@ public class Main {
         String problemNumber = "";
         while ((line = reader.readLine()) != null) {
             if (line.equals("")) {
-                continue;
+                writer.write("\n");
             } else if (expectingProblemNumber) {
                 expectingProblemNumber = false;
                 problemNumber = line;
                 writer.write(problemNumber + "\n");
             } else if (line.toLowerCase().equals("end")) {
-                writer.write("x\n\n");
+                writer.write("x\n");
                 expectingProblemNumber = true;
             } else {
                 switch (problemNumber) {

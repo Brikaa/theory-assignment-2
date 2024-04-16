@@ -455,6 +455,29 @@ public class Main {
                         }
                         break;
                     }
+                    case "10": {
+                        HashMap<String, HashMap<Character, String[]>> transitions = new HashMap<>() {
+                            {
+                                put("A", new HashMap<>() {
+                                    {
+                                        put('1', new String[] { "A" });
+                                        put('0', new String[] { "B" });
+                                    }
+                                });
+                                put("B", new HashMap<>() {
+                                    {
+                                        put('1', new String[] { "A" });
+                                    }
+                                });
+                            }
+                        };
+                        if (fsa(transitions, "A", new String[] { "A" }, line)) {
+                            writer.write("True\n");
+                        } else {
+                            writer.write("False\n");
+                        }
+                        break;
+                    }
                 }
             }
         }

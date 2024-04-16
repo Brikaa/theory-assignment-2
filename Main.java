@@ -12,6 +12,7 @@ public class Main {
             String start_state,
             String[] final_states,
             String str) {
+        // States array and alphabet array are implicit in the transitions
         String current_state = start_state;
         for (char chr : str.toCharArray()) {
             if (!transitions.containsKey(current_state)
@@ -110,6 +111,30 @@ public class Main {
                             }
                         };
                         if (dfa(transitions, "A", new String[] { "D" }, line)) {
+                            writer.write("True\n");
+                        } else {
+                            writer.write("False\n");
+                        }
+                        break;
+                    }
+                    case "3": {
+                        HashMap<String, HashMap<Character, String>> transitions = new HashMap<>() {
+                            {
+                                put("A", new HashMap<>() {
+                                    {
+                                        put('x', "B");
+                                        put('y', "A");
+                                    }
+                                });
+                                put("B", new HashMap<>() {
+                                    {
+                                        put('x', "A");
+                                        put('y', "B");
+                                    }
+                                });
+                            }
+                        };
+                        if (dfa(transitions, "A", new String[] { "B" }, line)) {
                             writer.write("True\n");
                         } else {
                             writer.write("False\n");

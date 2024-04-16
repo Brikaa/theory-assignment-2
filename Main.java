@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Main {
+    private static final char EPSILON = 'ε';
+
     private static boolean fsa(
             final HashMap<String, HashMap<Character, String[]>> transitions,
             final String startState,
@@ -14,14 +16,26 @@ public class Main {
             final String str,
             final int idx) {
         // States array and alphabet array are implicit in the transitions
+        final HashMap<Character, String[]> possibleNextStates = transitions.get(startState);
+
         if (idx == str.length())
             return Arrays.asList(finalStates).contains(startState);
+
         final char currentTransition = str.charAt(idx);
-        if (!transitions.containsKey(startState) || !transitions.get(startState).containsKey(currentTransition))
+        if (!transitions.containsKey(startState) || (!possibleNextStates.containsKey(currentTransition)
+                && !possibleNextStates.containsKey(EPSILON)))
             return false;
+
         boolean found = false;
-        for (String state : transitions.get(startState).get(currentTransition))
-            found |= fsa(transitions, state, finalStates, str, idx + 1);
+
+        if (possibleNextStates.containsKey(EPSILON))
+            for (String state : possibleNextStates.get(EPSILON))
+                found |= fsa(transitions, state, finalStates, str, idx);
+
+        if (possibleNextStates.containsKey(currentTransition))
+            for (String state : possibleNextStates.get(currentTransition))
+                found |= fsa(transitions, state, finalStates, str, idx + 1);
+
         return found;
     }
 

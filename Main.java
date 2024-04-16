@@ -7,23 +7,30 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Main {
-    private static boolean dfa(
-            HashMap<String, HashMap<Character, String>> transitions,
-            String start_state,
-            String[] final_states,
-            String str) {
+    private static boolean fsa(
+            final HashMap<String, HashMap<Character, String[]>> transitions,
+            final String start_state,
+            final String[] final_states,
+            final String str,
+            final int idx) {
         // States array and alphabet array are implicit in the transitions
-        String current_state = start_state;
-        for (char chr : str.toCharArray()) {
-            if (!transitions.containsKey(current_state)
-                    || !transitions.get(current_state).containsKey(chr)) {
-                return false;
-            } else {
-                current_state = transitions.get(current_state).get(chr);
-            }
-        }
+        if (idx == str.length())
+            return Arrays.asList(final_states).contains(start_state);
+        final char current_transition = str.charAt(idx);
+        if (!transitions.containsKey(start_state) || !transitions.get(start_state).containsKey(current_transition))
+            return false;
+        boolean found = false;
+        for (String state : transitions.get(start_state).get(current_transition))
+            found |= fsa(transitions, state, final_states, str, idx + 1);
+        return found;
+    }
 
-        return Arrays.asList(final_states).contains(current_state);
+    private static boolean fsa(
+            final HashMap<String, HashMap<Character, String[]>> transitions,
+            final String start_state,
+            final String[] final_states,
+            final String str) {
+        return fsa(transitions, start_state, final_states, str, 0);
     }
 
     public static void main(String[] args) throws IOException {
@@ -46,29 +53,29 @@ public class Main {
             } else {
                 switch (problemNumber) {
                     case "1": {
-                        HashMap<String, HashMap<Character, String>> transitions = new HashMap<>() {
+                        HashMap<String, HashMap<Character, String[]>> transitions = new HashMap<>() {
                             {
                                 put("A", new HashMap<>() {
                                     {
-                                        put('a', "A");
-                                        put('b', "B");
+                                        put('a', new String[] { "A" });
+                                        put('b', new String[] { "B" });
                                     }
                                 });
                                 put("B", new HashMap<>() {
                                     {
-                                        put('a', "C");
-                                        put('b', "B");
+                                        put('a', new String[] { "C" });
+                                        put('b', new String[] { "B" });
                                     }
                                 });
                                 put("C", new HashMap<>() {
                                     {
-                                        put('a', "C");
-                                        put('b', "C");
+                                        put('a', new String[] { "C" });
+                                        put('b', new String[] { "C" });
                                     }
                                 });
                             }
                         };
-                        if (dfa(transitions, "A", new String[] { "A", "B" }, line)) {
+                        if (fsa(transitions, "A", new String[] { "A", "B" }, line)) {
                             writer.write("True\n");
                         } else {
                             writer.write("False\n");
@@ -76,41 +83,41 @@ public class Main {
                         break;
                     }
                     case "2": {
-                        HashMap<String, HashMap<Character, String>> transitions = new HashMap<>() {
+                        HashMap<String, HashMap<Character, String[]>> transitions = new HashMap<>() {
                             {
                                 put("A", new HashMap<>() {
                                     {
-                                        put('0', "B");
-                                        put('1', "D");
+                                        put('0', new String[] { "B" });
+                                        put('1', new String[] { "D" });
                                     }
                                 });
                                 put("B", new HashMap<>() {
                                     {
-                                        put('0', "C");
-                                        put('1', "E");
+                                        put('0', new String[] { "C" });
+                                        put('1', new String[] { "E" });
                                     }
                                 });
                                 put("C", new HashMap<>() {
                                     {
-                                        put('0', "B");
-                                        put('1', "D");
+                                        put('0', new String[] { "B" });
+                                        put('1', new String[] { "D" });
                                     }
                                 });
                                 put("D", new HashMap<>() {
                                     {
-                                        put('0', "E");
-                                        put('1', "E");
+                                        put('0', new String[] { "E" });
+                                        put('1', new String[] { "E" });
                                     }
                                 });
                                 put("E", new HashMap<>() {
                                     {
-                                        put('0', "E");
-                                        put('1', "E");
+                                        put('0', new String[] { "E" });
+                                        put('1', new String[] { "E" });
                                     }
                                 });
                             }
                         };
-                        if (dfa(transitions, "A", new String[] { "D" }, line)) {
+                        if (fsa(transitions, "A", new String[] { "D" }, line)) {
                             writer.write("True\n");
                         } else {
                             writer.write("False\n");
@@ -118,23 +125,23 @@ public class Main {
                         break;
                     }
                     case "3": {
-                        HashMap<String, HashMap<Character, String>> transitions = new HashMap<>() {
+                        HashMap<String, HashMap<Character, String[]>> transitions = new HashMap<>() {
                             {
                                 put("A", new HashMap<>() {
                                     {
-                                        put('x', "B");
-                                        put('y', "A");
+                                        put('x', new String[] { "B" });
+                                        put('y', new String[] { "A" });
                                     }
                                 });
                                 put("B", new HashMap<>() {
                                     {
-                                        put('x', "A");
-                                        put('y', "B");
+                                        put('x', new String[] { "A" });
+                                        put('y', new String[] { "B" });
                                     }
                                 });
                             }
                         };
-                        if (dfa(transitions, "A", new String[] { "B" }, line)) {
+                        if (fsa(transitions, "A", new String[] { "B" }, line)) {
                             writer.write("True\n");
                         } else {
                             writer.write("False\n");

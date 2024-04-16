@@ -37,6 +37,17 @@ public class Main {
                         }
                         break;
                     }
+                    case "2": {
+                        String regex = "^(00)*1$";
+                        Pattern pattern = Pattern.compile(regex);
+                        Matcher matcher = pattern.matcher(line);
+                        if (matcher.matches()) {
+                            writer.write("True\n");
+                        } else {
+                            writer.write("False\n");
+                        }
+                        break;
+                    }
                 }
             }
         }

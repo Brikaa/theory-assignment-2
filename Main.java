@@ -9,28 +9,28 @@ import java.util.HashMap;
 public class Main {
     private static boolean fsa(
             final HashMap<String, HashMap<Character, String[]>> transitions,
-            final String start_state,
-            final String[] final_states,
+            final String startState,
+            final String[] finalStates,
             final String str,
             final int idx) {
         // States array and alphabet array are implicit in the transitions
         if (idx == str.length())
-            return Arrays.asList(final_states).contains(start_state);
-        final char current_transition = str.charAt(idx);
-        if (!transitions.containsKey(start_state) || !transitions.get(start_state).containsKey(current_transition))
+            return Arrays.asList(finalStates).contains(startState);
+        final char currentTransition = str.charAt(idx);
+        if (!transitions.containsKey(startState) || !transitions.get(startState).containsKey(currentTransition))
             return false;
         boolean found = false;
-        for (String state : transitions.get(start_state).get(current_transition))
-            found |= fsa(transitions, state, final_states, str, idx + 1);
+        for (String state : transitions.get(startState).get(currentTransition))
+            found |= fsa(transitions, state, finalStates, str, idx + 1);
         return found;
     }
 
     private static boolean fsa(
             final HashMap<String, HashMap<Character, String[]>> transitions,
-            final String start_state,
-            final String[] final_states,
+            final String startState,
+            final String[] finalStates,
             final String str) {
-        return fsa(transitions, start_state, final_states, str, 0);
+        return fsa(transitions, startState, finalStates, str, 0);
     }
 
     public static void main(String[] args) throws IOException {

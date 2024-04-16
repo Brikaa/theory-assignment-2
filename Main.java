@@ -148,6 +148,48 @@ public class Main {
                         }
                         break;
                     }
+                    case "4": {
+                        HashMap<String, HashMap<Character, String[]>> transitions = new HashMap<>() {
+                            {
+                                put("A", new HashMap<>() {
+                                    {
+                                        put('a', new String[] { "B" });
+                                        put('b', new String[] { "D" });
+                                    }
+                                });
+                                put("B", new HashMap<>() {
+                                    {
+                                        put('a', new String[] { "C" });
+                                        put('b', new String[] { "B" });
+                                    }
+                                });
+                                put("C", new HashMap<>() {
+                                    {
+                                        put('a', new String[] { "C" });
+                                        put('b', new String[] { "B" });
+                                    }
+                                });
+                                put("D", new HashMap<>() {
+                                    {
+                                        put('a', new String[] { "D" });
+                                        put('b', new String[] { "E" });
+                                    }
+                                });
+                                put("E", new HashMap<>() {
+                                    {
+                                        put('a', new String[] { "D" });
+                                        put('b', new String[] { "E" });
+                                    }
+                                });
+                            }
+                        };
+                        if (fsa(transitions, "A", new String[] { "C", "E" }, line)) {
+                            writer.write("True\n");
+                        } else {
+                            writer.write("False\n");
+                        }
+                        break;
+                    }
                 }
             }
         }

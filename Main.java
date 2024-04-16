@@ -408,6 +408,53 @@ public class Main {
                         }
                         break;
                     }
+                    case "9": {
+                        HashMap<String, HashMap<Character, String[]>> transitions = new HashMap<>() {
+                            {
+                                put("A", new HashMap<>() {
+                                    {
+                                        put(EPSILON, new String[] { "B", "E" });
+                                    }
+                                });
+                                put("B", new HashMap<>() {
+                                    {
+                                        put('0', new String[] { "C" });
+                                    }
+                                });
+                                put("C", new HashMap<>() {
+                                    {
+                                        put('1', new String[] { "D" });
+                                    }
+                                });
+                                put("D", new HashMap<>() {
+                                    {
+                                        put(EPSILON, new String[] { "B" });
+                                    }
+                                });
+                                put("E", new HashMap<>() {
+                                    {
+                                        put('1', new String[] { "F" });
+                                    }
+                                });
+                                put("F", new HashMap<>() {
+                                    {
+                                        put('0', new String[] { "G" });
+                                    }
+                                });
+                                put("G", new HashMap<>() {
+                                    {
+                                        put(EPSILON, new String[] { "E" });
+                                    }
+                                });
+                            }
+                        };
+                        if (fsa(transitions, "A", new String[] { "A", "B", "C", "D", "E", "F", "G" }, line)) {
+                            writer.write("True\n");
+                        } else {
+                            writer.write("False\n");
+                        }
+                        break;
+                    }
                 }
             }
         }

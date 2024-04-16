@@ -347,6 +347,67 @@ public class Main {
                         }
                         break;
                     }
+                    case "8": {
+                        HashMap<String, HashMap<Character, String[]>> transitions = new HashMap<>() {
+                            {
+                                put("E", new HashMap<>() {
+                                    {
+                                        put(EPSILON, new String[] { "A", "F" });
+                                    }
+                                });
+                                put("A", new HashMap<>() {
+                                    {
+                                        put('0', new String[] { "A" });
+                                        put('1', new String[] { "A", "B" });
+                                    }
+                                });
+                                put("B", new HashMap<>() {
+                                    {
+                                        put('0', new String[] { "C" });
+                                    }
+                                });
+                                put("C", new HashMap<>() {
+                                    {
+                                        put('1', new String[] { "D" });
+                                    }
+                                });
+                                put("D", new HashMap<>() {
+                                    {
+                                        put('0', new String[] { "D" });
+                                        put('1', new String[] { "D" });
+                                    }
+                                });
+                                put("F", new HashMap<>() {
+                                    {
+                                        put('1', new String[] { "F" });
+                                        put('0', new String[] { "F", "G" });
+                                    }
+                                });
+                                put("G", new HashMap<>() {
+                                    {
+                                        put('1', new String[] { "H" });
+                                    }
+                                });
+                                put("H", new HashMap<>() {
+                                    {
+                                        put('0', new String[] { "I" });
+                                    }
+                                });
+                                put("I", new HashMap<>() {
+                                    {
+                                        put('0', new String[] { "I" });
+                                        put('1', new String[] { "I" });
+                                    }
+                                });
+                            }
+                        };
+                        if (fsa(transitions, "E", new String[] { "D", "I" }, line)) {
+                            writer.write("True\n");
+                        } else {
+                            writer.write("False\n");
+                        }
+                        break;
+                    }
                 }
             }
         }
